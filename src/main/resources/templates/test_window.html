@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+
+<head>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <!--    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.min.js"></script>-->
+
+
+</head>
+
+
+<body onload="startTimer()">
+<p th:if="${error}" th:text="#{alert.wrong.login.or.password}"  class="alert alert-info" role="alert"></p>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 th:text="${test.name}"> </h1>
+            <h1 th:text="${test.name_ru}"></h1>
+            <h1 th:text="${test.category}"></h1>
+            <h1 th:text="${test.difficulty}"></h1>
+            <h1 th:text="${test.timeLimit}" > </h1>
+        </div>
+    </div>
+    <p><span id="my_timer" style="color: #5a7fff; font-size: 150%; font-weight: bold; ">00:[[${test.timeLimit}]]:05</span></p>
+
+
+
+
+
+    <script type="text/javascript">
+        function startTimer() {
+            var my_timer = document.getElementById("my_timer");
+            var time = my_timer.innerHTML;
+            var arr = time.split(":");
+            var h = arr[0];
+            var m =arr[1] ;
+            var s = arr[2];
+            if (s == 0) {
+                if (m == 0) {
+                    if (h == 0) {
+                        alert("Время вышло");
+                        window.location.reload();/////////////////
+                        return;
+                    }
+                    h--;
+                    m = 60;
+                    if (h < 10) h = "0" + h;
+                }
+                m--;
+                if (m < 10) m = "0" + m;
+                s = 59;
+            }
+            else s--;
+            if (s < 10) s = "0" + s;
+            while (m>59){
+                h++;
+                m=m-60;
+            }
+            document.getElementById("my_timer").innerHTML = h+":"+m+":"+s;
+            setTimeout(startTimer, 1000);
+        }
+    </script>
+
+</body>
+</html>

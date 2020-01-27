@@ -1,0 +1,94 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<a href="?lang=en">en</a>
+<a href="?lang=ru">ru</a>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+
+<button type="button" style="position:absolute; right: 100px"
+        class="btn btn-secondary btn-sm"  th:text="#{button.logout}" onclick="location.href='/logout'" ></button>
+
+
+<body onload="noBack();" onpageshow="if (event.persisted) noBack();" onunload="" >
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 th:text="#{title.hello.world}"> </h1>
+            <h2 th:text="#{text.logged.with}"></h2>
+            <h3 th:text="${email}"></h3>
+            <h5 th:text="#{title.hello.user}"> </h5>
+        </div>
+    </div>
+</div>
+
+<div class="panel-heading">
+    <h3 class="panel-title" ></h3>
+</div>
+
+<form th:action = "@{/available_tests}" method="get">
+    <input name="category" value="MATH" hidden >
+    <div class="button" >
+        <input type="submit" class="btn btn-secondary btn-lg btn-block" th:value="#{label.category.math}" >
+    </div>
+</form>
+
+<div class="panel-heading">
+    <h3 class="panel-title" ></h3>
+</div>
+
+<form th:action = "@{/available_tests}" method="get">
+    <input name="category" value="HISTORY" hidden >
+    <div class="button" >
+        <input type="submit" class="btn btn-secondary btn-lg btn-block" th:value="#{label.category.history}" >
+    </div>
+
+</form>
+
+<div class="panel-heading">
+    <h3 class="panel-title" ></h3>
+</div>
+
+<form th:action = "@{/available_tests}" method="get">
+    <input name="category" value="PROGRAMMING" hidden >
+    <div class="button" >
+        <input type="submit" class="btn btn-secondary btn-lg btn-block" th:value="#{label.category.programming}" >
+    </div>
+</form>
+
+<div class="panel-heading">
+    <h3 class="panel-title" ></h3>
+</div>
+
+<form th:action = "@{/available_tests}" method="get">
+    <input name="category" value="PHYSICS" hidden >
+    <div class="button" >
+        <input type="submit" class="btn btn-secondary btn-lg btn-block" th:value="#{label.category.physics}" >
+    </div>
+</form>
+
+<div class="panel-heading">
+    <h3 class="panel-title" ></h3>
+</div>
+
+<form th:action = "@{/completed_tests}" method="get">
+    <div class="button" >
+        <input type="submit" class="btn btn-secondary btn-lg btn-block" th:value="#{label.completesTests}" >
+    </div>
+</form>
+
+
+
+</body>
+
+</html>

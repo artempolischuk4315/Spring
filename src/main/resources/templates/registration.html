@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <a href="?lang=en">en</a>
+    <a href="?lang=ru">ru</a>
+</head>
+<body>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="panel panel-default" style="margin-top:45px">
+                <div class="panel-heading">
+                    <h3 class="panel-title" th:text="#{title.registration}"></h3>
+                </div>
+
+                <div class="panel-body">
+                    <p th:if="${error}" th:text="#{alert.wrong.email}"  class="alert alert-info" role="alert"></p>
+
+                    <form th:action = "@{/registration}" method="post">
+                        <p th:if="${message}" class="alert alert-info" role="alert" th:text="#{message.check.mail }"></p>
+                        <p th:if="${message1}" class="alert alert-info" role="alert" th:text="#{message.wrong.email }"></p>
+                        <input name="${_csrf.parameterName}" value="${_csrf.token}" type="hidden">
+                        <div class="form-group">
+                            <label for="email" th:text="#{label.email}"></label>
+                            <input type="email" class="form-control" id="email" placeholder=" "
+                                   pattern = "[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2, 4}$"
+                                   required
+                                   name="email">
+                        </div>
+
+                        <div class="panel-body">
+                            <form th:action = "@{/registration}" method="post">
+                                <input name="${_csrf.parameterName}" value="${_csrf.token}" type="hidden">
+                                <div class="form-group">
+                                    <label for="firstName" th:text="#{label.firstName}"></label>
+                                    <input type="text" class="form-control" id="firstName" placeholder="firstName"
+                                           pattern="^[a-zA-Z]+$"
+                                           required
+                                           name="firstName">
+                                </div>
+                                <div class="panel-body">
+                                    <form th:action = "@{/registration}" method="post">
+                                        <input name="${_csrf.parameterName}" value="${_csrf.token}" type="hidden">
+                                        <div class="form-group">
+                                            <label for="firstName_ru" th:text="#{label.firstName_ru}"></label>
+                                            <input type="text" class="form-control" id="firstName_ru" placeholder=" "
+                                                   pattern="^[а-яёА-ЯЁ]+$"
+                                                   required
+                                                   name="firstName_ru">
+                                        </div>
+                                <div class="panel-body">
+                                    <form th:action = "@{/registration}" method="post">
+                                        <input name="${_csrf.parameterName}" value="${_csrf.token}" type="hidden">
+                                        <div class="form-group">
+                                            <label for="lastName" th:text="#{label.lastName}"></label>
+                                            <input type="text" class="form-control" id="lastName" placeholder=" "
+                                                   pattern="^[a-zA-Z]+$"
+                                                   required
+                                                   name="lastName">
+                                        </div>
+                                        <div class="panel-body">
+                                            <form th:action = "@{/registration}" method="post">
+                                                <input name="${_csrf.parameterName}" value="${_csrf.token}" type="hidden">
+                                                <div class="form-group">
+                                                    <label for="lastName_ru" th:text="#{label.lastName_ru}"></label>
+                                                    <input type="text" class="form-control" id="lastName_ru" placeholder=""
+                                                           pattern="^[а-яёА-ЯЁ]+$"
+                                                           required
+                                                           name="lastName_ru">
+                                                </div>
+                                        <div class="form-group">
+                                            <label for="password" th:text="#{label.password}"></label>
+                                            <input type="password" class="form-control" id="password" placeholder="****"
+                                                   required
+                                                   name="password">
+                                        </div>
+                                        <button type="submit" class="btn btn-default" th:text="#{button.registration}"></button>
+                                    </form>
+                                </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+</body>
+</html>

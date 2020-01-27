@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<a id='ru'
+   href="&lang=ru">ru
+</a>
+<a id='en'
+   href="&lang=en">en
+</a>
+
+<script>
+    var x = window.location.href;
+    var count = (x.split('&').length - 1)
+    if(count===0){ x = window.location.href+"&";}
+    var page =  x.substring(0, x.lastIndexOf('&'));
+    var link = document.getElementById("ru"); // store the element
+    var curHref = link.getAttribute('href'); // get its current href value
+    link.setAttribute('href', page + curHref );
+
+
+    var x = window.location.href;
+    var count = (x.split('&').length - 1)
+    if(count===0){ x = window.location.href+"&";}
+    var page =  x.substring(0, x.lastIndexOf('&'));
+    var link = document.getElementById("en"); // store the element
+    var curHref = link.getAttribute('href'); // get its current href value
+    link.setAttribute('href', page + curHref );
+
+
+</script>
+
+<script>
+    function clean(a, x) {
+        a++;
+        if(a==0){x=x+"&"}
+        return x.substring(0, x.lastIndexOf('&'));
+    }
+</script>
+<head>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <!--    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.min.js"></script>-->
+
+
+</head>
+
+<button type="button" style="position:absolute; right: 100px"
+        class="btn btn-secondary btn-sm"  th:text="#{button.logout}" onclick="location. href='/logout'" ></button>
+<button type="button" style="position:absolute; right: 180px"
+        class="btn btn-secondary btn-sm"  th:text="#{button.back}" onclick="location.href='/'" ></button>
+<body>
+<body>
+
+
+<div id = "all_users">
+    <h2 th:text="#{title.all.availableTests}" align="middle"></h2>
+    <h4 th:text="#{label.click}" align="middle"> </h4>
+</div>
+
+    <table class="datatable" id="table">
+        <thead>
+        <tr>
+            <th th:text="#{label.test.name}"></th>
+            <th th:text="#{label.test.name_ru}"></th>
+            <th th:text="#{label.test.category}"></th>
+            <th th:text="#{label.test.numberOfQuestions}"></th>
+            <th th:text="#{label.test.difficulty}"></th>
+            <th th:text="#{label.test.timeLimit}"></th>
+
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:if="${availableTests.empty}">
+            <td colspan="2" th:text="#{message.availableTests.empty}"> </td>
+        </tr>
+        <tr th:each="test: ${availableTests}">
+            <td th:text="${test.name}" >Name </td>
+            <td th:text="${test.name_ru}" >NameRu </td>
+            <td th:text="${test.category}" > Category </td>
+            <td th:text="${test.numberOfQuestions}" onclick="window.location.href='/test_window'; return false">NumberOfQuestions </td>
+            <td th:text="${test.difficulty}" > Difficulty </td>
+            <td th:text="${test.timeLimit}" > timeLimit </td>
+
+
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<form th:action = "@{/available_tests}" method="post" id="form" name="form">
+    <div>
+    <input type="text" name="name" id="name" hidden><br><br>
+    <input type="text" name="name_ru" id="name_ru" hidden><br><br>
+    <input type="text" name="category" id="category" hidden><br><br>
+    <input type="text" name="numberOfQuestions" id="numberOfQuestions" hidden><br><br>
+    <input type="text" name="difficulty" id="difficulty" hidden><br><br>
+    <input type="text" name="timeLimit" id="timeLimit" hidden><br><br>
+        <button type="submit"
+                class='input_submit'
+                id="buttonsub"
+                hidden
+        >
+        </button>
+    </div>
+</form>
+
+
+<script>
+
+        var table = document.getElementById('table');
+
+        for(var i = 1; i < table.rows.length; i++)
+        {
+            table.rows[i].onclick = function()
+            {
+                //rIndex = this.rowIndex;
+                document.getElementById("name").value = this.cells[0].innerHTML;
+                document.getElementById("name_ru").value = this.cells[1].innerHTML;
+                document.getElementById("category").value = this.cells[2].innerHTML;
+                document.getElementById("numberOfQuestions").value = this.cells[3].innerHTML;
+                document.getElementById("difficulty").value = this.cells[4].innerHTML;
+                document.getElementById("timeLimit").value = this.cells[5].innerHTML;
+                submitform1();
+            };
+
+        }
+        function submitform1()
+        {
+            document.forms["form"].submit();
+        }
+
+    </script>
+
+
+</body>
+
+</html>

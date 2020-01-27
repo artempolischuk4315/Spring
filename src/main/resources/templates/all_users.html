@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<a href="?lang=en">en</a>
+<a href="?lang=ru">ru</a>
+<head>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="style.css" />
+
+
+</head>
+
+
+
+
+<button type="button" style="position:absolute; right: 100px"
+        class="btn btn-secondary btn-sm"  th:text="#{button.logout}" onclick="location.href='/logout'" ></button>
+<body>
+<button type="button" style="position:absolute; right: 180px"
+        class="btn btn-secondary btn-sm"  th:text="#{button.back}" onclick="location.href='/'" ></button>
+<body>
+
+<div class="col-md-6 col-md-offset-3">
+    <div class="panel panel-default" style="margin-top:45px">
+        <div class="panel-heading">
+            <h3 class="panel-title"></h3>
+        </div>
+        <div class="panel-body" >
+            <form th:action = "@{/all_users}" method="post" >
+                <p th:if="${message}" class="alert alert-info" role="alert" th:text="#{message.wrong.email2 }"></p>
+                <input  name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}">
+                <div align="middle" class="form-group">
+                    <label for="email" th:text="#{label.email}" > </label>
+                    <input align="bottom" type="email" class="form-control" id="email" placeholder=" "
+                           pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
+                           required
+                           name="email">
+                </div>
+
+                <button type="submit" style="position:relative;"
+                        class="btn btn-secondary btn-lg btn-block "
+                        th:text="#{button.watchTestInfo}"></button>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+<button type="button" style="position:absolute; left: 100px "
+        class="btn btn-secondary btn-lg "
+        th:text="#{button.openTestForSelectedUser}" onclick="location.href='allow_test'" ></button>
+
+
+<div id = "content">
+    <table class="datatable">
+        <thead>
+        <tr>
+            <th th:text="#{label.user.id}"></th>
+            <th th:text="#{label.email}"></th>
+            <th th:text="#{label.firstName}"></th>
+            <th th:text="#{label.firstName_ru}"></th>
+            <th th:text="#{label.lastName}"></th>
+            <th th:text="#{label.lastName_ru}"></th>
+            <th th:text="#{label.user.success}"</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:if="${users.empty}">
+            <td colspan="2" th:text="#{message.users.empty}"> </td>
+        </tr>
+        <tr th:each="user: ${users}">
+            <td><span th:text="${user.id}"> Id </span></td>
+            <td><span th:text="${user.email}">Login </span></td>
+            <td><span th:text="${user.firstName}"> Id </span></td>
+            <td><span th:text="${user.firstName_ru}"> Id </span></td>
+            <td><span th:text="${user.lastName}">Login </span></td>
+            <td><span th:text="${user.lastName_ru}">Login </span></td>
+            <td><span th:text="${user.success}"> Roles </span></td>
+        </tr>
+        </tbody>
+    </table>
+
+
+</div>
+
+
+
+
+
+
+
+</body>
+
+</html>

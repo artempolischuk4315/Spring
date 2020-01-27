@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<a href="?lang=en">en</a>
+<a href="?lang=ru">ru</a>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+
+<head>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+
+<button type="button" style="position:absolute; right: 100px"
+        class="btn btn-secondary btn-sm"  th:text="#{button.logout}" onclick="location.href='/logout'" ></button>
+<button type="button" style="position:absolute; right: 180px"
+        class="btn btn-secondary btn-sm"  th:text="#{button.back}" onclick="location.href='/all_users'" ></button>
+<body>
+<body>
+<div id = "available_tests">
+    <h2 th:text="#{title.all.availableTests}" align="middle"></h2>
+</div>
+<div id = "content">
+    <table class="datatable">
+        <thead>
+        <tr>
+            <th th:text="#{label.test.id}"></th>
+            <th th:text="#{label.test.name}"></th>
+            <th th:text="#{label.test.name_ru}"></th>
+            <th th:text="#{label.test.category}"></th>
+            <th th:text="#{label.test.numberOfQuestions}"></th>
+            <th th:text="#{label.test.difficulty}"></th>
+            <th th:text="#{label.test.timeLimit}"></th>
+
+        </tr>
+        </thead>
+        <p th:if="${error}" th:text="#{alert.deleted.test}"  class="alert alert-info" role="alert"></p>
+        <tbody>
+        <tr th:if="${availableTests.empty}">
+            <td colspan="2" th:text="#{message.availableTests.empty}"> </td>
+        </tr>
+        <tr th:each="test: ${availableTests}">
+            <td><span th:text="${test.id}"> Id </span></td>
+            <td><span th:text="${test.name}">Name </span></td>
+            <td><span th:text="${test.name_ru}">Name </span></td>
+            <td><span th:text="${test.category}"> Category </span></td>
+            <td><span th:text="${test.numberOfQuestions}">NumberOfQuestions </span></td>
+            <td><span th:text="${test.difficulty}"> Difficulty </span></td>
+            <td><span th:text="${test.timeLimit}"> timeLimit </span></td>
+
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+
+</html>

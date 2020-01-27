@@ -1,0 +1,9 @@
+{
+  "properties": [
+    {
+      "name": "tomcat.util.http.parser.HttpParser.requestTargetAllow",
+      "type": "java.lang.String",
+      "description": "Description for tomcat.util.http.parser.HttpParser.requestTargetAllow.",
+      "encodeURIComponent(msg=name|id|"")",
+  }
+] }
