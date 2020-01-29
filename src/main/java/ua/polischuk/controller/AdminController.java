@@ -83,10 +83,8 @@ public class AdminController {
         try{
             userService.addTestToAvailable(userService.findByEmail(email).get(), testService.findTestByName(testName));
             log.info(userService.findByEmail(email).get().getAvailableTests().toString());
-            log.info(" Is here");
+
         }catch (Exception ex){
-            log.info("PLOHA ");
-            //ex.printStackTrace();
             model.addAttribute("message", "bad email");
             model.addAttribute("users", userService.getAllUsers().getUsers());
             model.addAttribute("tests", testService.getAllTests().getTests());

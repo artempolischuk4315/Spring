@@ -20,12 +20,22 @@
 <body>
 <h1 th:text="#{title.test.completed}"> </h1>
 <h1 th:text="#{title.test.result}"> </h1>
-<p th:if="${error}" th:text="#{alert.wrong.login.or.password}"  class="alert alert-info" role="alert"></p>
 <form th:action = "@{/}" method="post">
     <div class="button" >
         <input type="submit" class="btn btn-secondary btn-lg " th:value="#{label.over}" >
     </div>
 </form>
-
+<form action="#" th:action = "@{/test_over}" method="post" th:object="${test}">
+    <div class="button" >
+        <input type="text" th:field="*{id}" hidden/>
+        <input type="text" th:field="*{name}" hidden/>
+        <input type="text" th:field="*{name_ru}" hidden/>
+        <input type="text" th:field="*{category}" hidden/>
+        <input type="text" th:field="*{difficulty}" hidden/>
+        <input type="text" th:field="*{numberOfQuestions}" hidden/>
+        <input type="text" th:field="*{timeLimit}" hidden/>
+        <input type="submit" class="btn btn-secondary btn-lg "  th:value="#{label.getResult}" onclick="this.disabled=true;this.value='Submitting...'; this.form.submit();" >
+    </div>
+</form>
 </body>
 </html>

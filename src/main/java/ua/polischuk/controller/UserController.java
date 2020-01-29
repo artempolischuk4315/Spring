@@ -6,8 +6,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ua.polischuk.entity.Test;
 import ua.polischuk.entity.User;
 import ua.polischuk.entity.enumsAndRegex.Category;
@@ -64,7 +66,8 @@ public class UserController {
 
     @PostMapping( "/available_tests")
     public String showTestWindow(@RequestParam(value = "error", required = false) String error,
-                                 Test test, Model model )  {
+                                 Test test, Model model,
+                                 final RedirectAttributes redirectAttributes)  {
         model.addAttribute("test", test);
         UserDetails userDetails = (UserDetails) org.springframework.security.core.context.SecurityContextHolder
                 .getContext().getAuthentication().getPrincipal();
@@ -74,19 +77,41 @@ public class UserController {
             log.info("Error");
             e.printStackTrace();
             model.addAttribute("error", error != null);
-            return "redirect:/test_over";
-        }
 
+            return "redirect:/";
+        }
+        redirectAttributes.addFlashAttribute("test", test);
         return "redirect:/test_over";
     }
+
     @GetMapping( "/test_over")
-    public String showTestsOver( Model model){
+    public String showTestsOver(@ModelAttribute("test") Test test, Model model){
+
+        try {
+            test = testService.findTestByName(test.getName());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/";
+        }
+
+        log.info("Test is "+test);
+        model.addAttribute("test", test);
 
         return "test_over";
 
     }
-    @PostMapping("/test_window")
-    public String showCompletedTestWindow(  )  {
-        return "test_over";
+    @PostMapping("/test_over")
+    public String sendResult(Test test)  {
+        UserDetails userDetails = (UserDetails) org.springframework.security.core.context.SecurityContextHolder
+                .getContext().getAuthentication().getPrincipal();
+
+
+
+        try {
+            userService.sendResult(userDetails, test);
+        }catch (Exception e){
+            return "test_over";
+        }
+        return "redirect:/";
     }
 }

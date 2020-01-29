@@ -132,16 +132,17 @@ public class UserService implements UserDetailsService {
     }
 
     public void manageResultAndCompleteTest(UserDetails userDetails, Test test) throws Exception {
-        Integer result = setRandomResult();//out
-        completeTest(userDetails, test, result);
-        sendResult(userDetails.getUsername(), result, test.getName());//out
+
+        completeTest(userDetails, test);
+
     }
 
 
     @Transactional
-    public void completeTest(UserDetails userDetails, Test test, Integer result) throws Exception {
+    public void completeTest(UserDetails userDetails, Test test) throws Exception {
         User user = userRepository.findByEmail(userDetails.getUsername()).orElseThrow(Exception::new); //запрос в БД на текущего пользователя
         dropTestFromAvailable(test, user);
+        Integer result = setRandomResult();
         addTestToCompleted(test, user, result);
         setStats(user, result);
         userRepository.save(user);
@@ -150,8 +151,12 @@ public class UserService implements UserDetailsService {
 
 
    private void dropTestFromAvailable(Test test, User user) throws Exception {
-        user.getAvailableTests().remove(testRepository.findByName(test.getName()).orElseThrow(Exception::new));
-        userRepository.save(user);
+        if(user.getAvailableTests().contains(testRepository.findByName(test.getName()).get())){
+            user.getAvailableTests().remove(testRepository.findByName(test.getName()).orElseThrow(Exception::new));
+            userRepository.save(user);
+        }
+       else throw new Exception();
+
     }
     private int setRandomResult() {
         return   (1+ (int) (Math.random()*MAX));
@@ -214,7 +219,13 @@ public class UserService implements UserDetailsService {
         return false;
     }
 
-    private void sendResult(String email,  Integer result, String testName){
-        mailSender.send(email, Admin_Data.EMAIL, Admin_Data.MAIL_MESSAGE+ testName+Admin_Data.IS+result.toString());
+    public void sendResult(UserDetails userDetails, Test test){
+        String email = userDetails.getUsername();
+        User user =userRepository.findByEmail(email).get();
+        //getUserAndTest(user, test, email);
+        Integer result = user.getResultsOfTests().get(test);
+        mailSender.send(email, Admin_Data.EMAIL, Admin_Data.MAIL_MESSAGE+ test.getName()+Admin_Data.IS+result.toString());
+
     }
+
 }

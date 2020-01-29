@@ -34,10 +34,10 @@ public class RegistrationController {
     public String addUser(User user, Model model) {
             try{
             userService.saveNewUser(user);
-            model.addAttribute("message", "check your mail!!!!!");
+            model.addAttribute("message", "check your mail!");
             return "registration";
         }catch (Exception e) {
-                model.addAttribute("message1", "user is already exist!!!!!");
+                model.addAttribute("message1", "user is already exist!");
                 return "registration";
             }
     }
@@ -45,7 +45,6 @@ public class RegistrationController {
     @GetMapping("/activate/{code}")
     public String activate(Model model, @PathVariable String code) {
         boolean isActivated = userService.activateUser(code);
-        log.info("TUTA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         if (isActivated) {
             model.addAttribute("message", "User successfully activated");
         } else {

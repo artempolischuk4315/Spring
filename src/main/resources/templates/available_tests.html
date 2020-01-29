@@ -106,11 +106,11 @@
                 class='input_submit'
                 id="buttonsub"
                 hidden
+                onclick="this.disabled = true"
         >
         </button>
     </div>
 </form>
-
 
 <script>
 
@@ -127,7 +127,11 @@
                 document.getElementById("numberOfQuestions").value = this.cells[3].innerHTML;
                 document.getElementById("difficulty").value = this.cells[4].innerHTML;
                 document.getElementById("timeLimit").value = this.cells[5].innerHTML;
-                submitform1();
+                var first = true;
+                if(first) {
+                    first=false;
+                    submitform1();
+                }
             };
 
         }
