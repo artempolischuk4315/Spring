@@ -13,7 +13,6 @@ import java.lang.reflect.Field;
 @NoArgsConstructor
 @Builder
 @ToString
-
 @Entity
 @Table(name = "Tests", uniqueConstraints={@UniqueConstraint(columnNames={"name"})})
 public class Test implements Serializable, Comparable<Test> {
@@ -25,6 +24,8 @@ public class Test implements Serializable, Comparable<Test> {
 
     @Column( nullable = false)
     private String name;
+
+
 
     @Column( nullable = false)
     private String name_ru;
@@ -48,6 +49,8 @@ public class Test implements Serializable, Comparable<Test> {
    /* @ManyToMany(fetch = FetchType.EAGER, mappedBy = "availableTests")
     private List<User> users;*/
 
+    @Column
+    private boolean active;
 
     @Column( nullable = true)
     private Integer result;
@@ -57,6 +60,7 @@ public class Test implements Serializable, Comparable<Test> {
     public int compareTo(Test t) {
         return name.compareTo(t.getName());
     }
+
 
 
     public boolean isEmpty()  {
@@ -72,4 +76,6 @@ public class Test implements Serializable, Comparable<Test> {
         }
         return true;
     }
+
+
 }

@@ -93,6 +93,7 @@
                     <th th:text="#{label.test.name}"></th>
                     <th th:text="#{label.test.name_ru}"></th>
                     <th th:text="#{label.test.category}"></th>
+                    <th th:text="#{label.test.isActive}"></th>
                 </tr>
                 </thead>
 
@@ -104,6 +105,7 @@
                     <td><span th:text="${test.name}">Name </span></td>
                     <td><span th:text="${test.name_ru}">Name </span></td>
                     <td><span th:text="${test.category}"> Category </span></td>
+                    <td><span  th:if="${test.active}" th:text="#{test.enabled}"> timeLimit </span></td>
                 </tr>
                 </tbody>
             </table>

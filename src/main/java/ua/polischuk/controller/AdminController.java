@@ -52,7 +52,7 @@ public class AdminController {
     @PostMapping("/all_tests")
     public String deleteTest(String name, Model model){
         try{
-            testService.deleteTest(testService.findTestByName(name));
+            testService.disableTest(testService.findTestByName(name));
             log.info(" Is here");
         }catch (Exception ex){
             log.info(" test with this name is not exist");
@@ -69,10 +69,12 @@ public class AdminController {
         model.addAttribute("users", userService.getAllUsers().getUsers());
         return "all_users";
     }
+
+
     @GetMapping("/allow_test")
     @PreAuthorize("hasRole('ADMIN')")
     public String showAllowMenu(Model model){
-        model.addAttribute("tests", testService.getAllTests().getTests());
+        model.addAttribute("tests", testService.getAllTests().getTests()); //TODO transaction?
         model.addAttribute("users", userService.getAllUsers().getUsers());
         return "allow_test_redactor";
     }
@@ -81,12 +83,10 @@ public class AdminController {
     public String allowTests(String email, String testName, Model model){
 
         try{
-            userService.addTestToAvailable(userService.findByEmail(email).get(), testService.findTestByName(testName));
-            log.info(userService.findByEmail(email).get().getAvailableTests().toString());
-
+            userService.addTestToAvailable(email, testName);
         }catch (Exception ex){
             model.addAttribute("message", "bad email");
-            model.addAttribute("users", userService.getAllUsers().getUsers());
+            model.addAttribute("users", userService.getAllUsers().getUsers());  //TODO refactor
             model.addAttribute("tests", testService.getAllTests().getTests());
             return "allow_test_redactor";
         }
@@ -94,18 +94,29 @@ public class AdminController {
         return "redirect:/allow_test";
     }
 
+    @PostMapping("/enable_test")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String showAllTests(Model model, String nameOfTest){
+        try{
+            testService.enableTest(testService.findTestByName(nameOfTest));
+            log.info(" Is here");
+        }catch (Exception ex){
+            log.info(" test with this name is not exist");
+            model.addAttribute("message", " Test with this name is not exist");
+            return "redirect:/all_tests";
+        }
 
+        return "redirect:/all_tests";
+
+    }
 
     @PostMapping("/all_users")
     @PreAuthorize("hasRole('ADMIN')")
     public String showAvailableTestsForEnteredUser(Model model, String email){
-        log.info("111111");
-        try {
-            log.info("2222222");
-            model.addAttribute("availableTests", userService.getAvailableTests(userService.findByEmail(email).get()));
 
+        try {
+            model.addAttribute("availableTests", userService.getAvailableTests(userService.findByEmail(email).get()));
         }catch (Exception ex){
-            log.info("333333333");
             model.addAttribute("message", "wrong email");
             model.addAttribute("users", userService.getAllUsers().getUsers());
             return "all_users";

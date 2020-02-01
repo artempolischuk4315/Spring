@@ -51,8 +51,10 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public void addTestToAvailable(User user, Test test) throws Exception {
-        testRepository.findByName(test.getName()).orElseThrow(() -> new Exception(test.getName()));
+    public void addTestToAvailable(String email, String testName) throws Exception {
+
+        Test test = testRepository.findByName(testName).orElseThrow(() -> new Exception(testName));
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new Exception((email)));
         if(user.getAvailableTests().isEmpty()) {
             setAvailableTestsForUser(user, test);
         }
@@ -63,7 +65,7 @@ public class UserService implements UserDetailsService {
     }
 
     private void setAvailableTestsForUser(User user, Test test) {
-        Set<Test> t = new TreeSet<>();
+        Set<Test> t = new HashSet<>();
         t.add(test);
         user.setAvailableTests(t);
     }
@@ -71,12 +73,14 @@ public class UserService implements UserDetailsService {
     public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
+
     @Transactional
     public void recountSuccessOnMainUserPage(UserDetails userDetails){
         Optional<User> user = userRepository.findByEmail(userDetails.getUsername());
         recountSuccess(user.get());
         userRepository.save(user.get());
     }
+
     public boolean saveNewUser(User user) throws Exception {
 
         setParametersOfNewUser(user);
@@ -132,9 +136,7 @@ public class UserService implements UserDetailsService {
     }
 
     public void manageResultAndCompleteTest(UserDetails userDetails, Test test) throws Exception {
-
         completeTest(userDetails, test);
-
     }
 
 
@@ -151,7 +153,8 @@ public class UserService implements UserDetailsService {
 
 
    private void dropTestFromAvailable(Test test, User user) throws Exception {
-        if(user.getAvailableTests().contains(testRepository.findByName(test.getName()).get())){
+        if(user.getAvailableTests().contains(testRepository.findByName(test.getName()).get())&
+                testRepository.findByName(test.getName()).get().isActive()){
             user.getAvailableTests().remove(testRepository.findByName(test.getName()).orElseThrow(Exception::new));
             userRepository.save(user);
         }

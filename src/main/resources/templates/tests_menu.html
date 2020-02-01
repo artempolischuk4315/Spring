@@ -21,34 +21,44 @@
 <button type="button" style="position:absolute; right: 180px"
         class="btn btn-secondary btn-sm"  th:text="#{button.back}" onclick="location.href='/'" ></button>
 
-<body>
-<div id = "tests_menu">
-    <h2 th:text="#{title.all.tests}" align="middle"></h2>
-</div>
 
 <div class="col-md-6 col-md-offset-3">
     <div class="panel panel-default" style="margin-top:45px">
-        <div class="panel-heading">
-            <h3 class="panel-title"></h3>
+        <div class="panel-body">
+            <form th:action = "@{/all_tests}" method="post">
+                <p th:if="${message}" class="alert alert-info" role="alert" th:text="#{message.wrong.email }"></p>
+                <input name="${_csrf.parameterName}" value="${_csrf.token}" type="hidden">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="name" placeholder=" "
+                           pattern="^[a-zA-Z0-9]+$"
+                           required
+                           name="name">
+                </div>
+                <button type="submit" class="btn btn-secondary btn-lg btn-block " th:text="#{button.disable_test}" onclick="location.href='/all_tests'"></button>
+            </form>
         </div>
-<div class="panel-body">
-    <form th:action = "@{/all_tests}" method="post">
-        <p th:if="${message}" class="alert alert-info" role="alert" th:text="#{message.wrong.email }"></p>
-        <input name="${_csrf.parameterName}" value="${_csrf.token}" type="hidden">
-        <div class="form-group">
-            <label for="name" th:text="#{label.test.name}"></label>
-            <input type="text" class="form-control" id="name" placeholder=" "
-                   pattern="^[a-zA-Z0-9]+$"
-                   required
-                   name="name">
-        </div>
-        <button type="submit" class="btn btn-secondary btn-lg btn-block " th:text="#{button.delete_test}" onclick="location.href='/all_tests'"></button>
-    </form>
+    </div>
 </div>
+<div class="col-md-6 col-md-offset-3">
+    <div class="panel panel-default" style="margin-top:45px">
+        <div class="panel-body">
+            <form th:action = "@{/enable_test}" method="post">
+                <p th:if="${message}" class="alert alert-info" role="alert" th:text="#{message.wrong.email }"></p>
+                <input name="${_csrf.parameterName}" value="${_csrf.token}" type="hidden">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="nameOfTest" placeholder=" "
+                           pattern="^[a-zA-Z0-9]+$"
+                           required
+                           name="nameOfTest">
+                </div>
+                <button type="submit" class="btn btn-secondary btn-lg btn-block " th:text="#{button.enable_test}"></button>
+            </form>
+        </div>
     </div>
 </div>
 <div id = "content">
     <table class="datatable">
+        <thead>
         <thead>
         <tr>
             <th th:text="#{label.test.id}"></th>
@@ -58,6 +68,7 @@
             <th th:text="#{label.test.numberOfQuestions}"></th>
             <th th:text="#{label.test.difficulty}"></th>
             <th th:text="#{label.test.timeLimit}"></th>
+            <th th:text="#{label.test.isActive}"></th>
         </tr>
         </thead>
 
@@ -67,16 +78,21 @@
         </tr>
         <tr th:each="test: ${tests}">
             <td><span th:text="${test.id}"> Id </span></td>
-            <td><span th:text="${test.name}">Name </span></td>
+            <td th:text="${test.name}">Name </td>
             <td><span th:text="${test.name_ru}">Name </span></td>
             <td><span th:text="${test.category}"> Category </span></td>
             <td><span th:text="${test.numberOfQuestions}">NumberOfQuestions </span></td>
             <td><span th:text="${test.difficulty}"> Difficulty </span></td>
             <td><span th:text="${test.timeLimit}"> timeLimit </span></td>
+            <td><span  th:if="${test.active}" th:text="#{test.enabled}" > timeLimit </span></td>
         </tr>
         </tbody>
     </table>
 </div>
 </body>
 
+<script>
+
+
+</script>
 </html>

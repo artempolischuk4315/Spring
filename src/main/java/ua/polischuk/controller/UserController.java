@@ -37,11 +37,14 @@ public class UserController {
                 .getContext().getAuthentication().getPrincipal();
 
         try {
+
             model.addAttribute("category", Category.valueOf(category));
             Set<Test> tests = userService.getAvailableTests(userService.findByEmail(user.getUsername()).get())
                     .stream()
                     .filter(test -> test.getCategory().toString().equals(category)) //TODO
+                    .filter(test -> test.isActive())
                     .collect(Collectors.toSet());
+
             model.addAttribute("availableTests", tests);
         }catch (Exception e){
             e.printStackTrace();
@@ -54,11 +57,9 @@ public class UserController {
         UserDetails userDetails = (UserDetails) org.springframework.security.core.context.SecurityContextHolder
                 .getContext().getAuthentication().getPrincipal();
         User user =userService.findByEmail(userDetails.getUsername()).get();
-        userService.recountSuccessOnMainUserPage(userDetails);
+        userService.recountSuccessOnMainUserPage(userDetails); //TODO в отельный метод в сервис
         model.addAttribute("success", user.getSuccess());
         model.addAttribute("tests", userService.setResultsOfTestsForPrinting(userDetails));
-
-
 
         return "completed_tests";
 
@@ -104,8 +105,6 @@ public class UserController {
     public String sendResult(Test test)  {
         UserDetails userDetails = (UserDetails) org.springframework.security.core.context.SecurityContextHolder
                 .getContext().getAuthentication().getPrincipal();
-
-
 
         try {
             userService.sendResult(userDetails, test);
