@@ -5,10 +5,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import ua.polischuk.entity.Test;
+import ua.polischuk.entity.User;
 import ua.polischuk.service.TestService;
 import ua.polischuk.service.UserService;
+
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
+import java.util.Optional;
 
 
 @Slf4j
@@ -26,7 +33,7 @@ public class AdminController {
 
     @GetMapping("/add_test")
     @PreAuthorize("hasRole('ADMIN')")
-    public String showTestRedactor(Model model){
+    public String showTestRedactor(){
         return "tests_redactor";
     }
 
@@ -34,7 +41,7 @@ public class AdminController {
     public String addTest(Test test, Model model){
         try{
             testService.saveNewTest(test);
-        }catch (Exception ex){
+        }catch (EntityExistsException ex){
             log.info(test.getName() + " test with this name is already exist");
             model.addAttribute("message", " test with this name is already exist");
             return "tests_redactor";
@@ -54,7 +61,7 @@ public class AdminController {
         try{
             testService.disableTest(testService.findTestByName(name));
             log.info(" Is here");
-        }catch (Exception ex){
+        }catch (EntityNotFoundException ex){
             log.info(" test with this name is not exist");
             model.addAttribute("message", " Test with this name is not exist");
             return "redirect:/all_tests";
@@ -84,7 +91,7 @@ public class AdminController {
 
         try{
             userService.addTestToAvailable(email, testName);
-        }catch (Exception ex){
+        }catch (EntityNotFoundException ex){
             model.addAttribute("message", "bad email");
             model.addAttribute("users", userService.getAllUsers().getUsers());  //TODO refactor
             model.addAttribute("tests", testService.getAllTests().getTests());
@@ -100,7 +107,7 @@ public class AdminController {
         try{
             testService.enableTest(testService.findTestByName(nameOfTest));
             log.info(" Is here");
-        }catch (Exception ex){
+        }catch (EntityNotFoundException ex){
             log.info(" test with this name is not exist");
             model.addAttribute("message", " Test with this name is not exist");
             return "redirect:/all_tests";
@@ -114,9 +121,11 @@ public class AdminController {
     @PreAuthorize("hasRole('ADMIN')")
     public String showAvailableTestsForEnteredUser(Model model, String email){
 
-        try {
-            model.addAttribute("availableTests", userService.getAvailableTests(userService.findByEmail(email).get()));
-        }catch (Exception ex){
+        Optional<User> user = userService.findByEmail(email);
+        if(user.isPresent()){
+            model.addAttribute("availableTests", userService.getAvailableTests(user.get()));
+        }
+        else{
             model.addAttribute("message", "wrong email");
             model.addAttribute("users", userService.getAllUsers().getUsers());
             return "all_users";

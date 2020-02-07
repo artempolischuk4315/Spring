@@ -52,7 +52,7 @@ public class Test implements Serializable, Comparable<Test> {
     @Column
     private boolean active;
 
-    @Column( nullable = true)
+    @Column
     private Integer result;
 
 

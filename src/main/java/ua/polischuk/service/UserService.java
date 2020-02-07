@@ -16,6 +16,8 @@ import ua.polischuk.repository.TestRepository;
 import ua.polischuk.repository.UserRepository;
 import ua.polischuk.service.constants.Admin_Data;
 
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.*;
 
@@ -51,10 +53,10 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public void addTestToAvailable(String email, String testName) throws Exception {
+    public void addTestToAvailable(String email, String testName) throws EntityNotFoundException {
 
-        Test test = testRepository.findByName(testName).orElseThrow(() -> new Exception(testName));
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new Exception((email)));
+        Test test = testRepository.findByName(testName).orElseThrow(() -> new EntityNotFoundException(testName));
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException((email)));
         if(user.getAvailableTests().isEmpty()) {
             setAvailableTestsForUser(user, test);
         }
@@ -81,13 +83,13 @@ public class UserService implements UserDetailsService {
         userRepository.save(user.get());
     }
 
-    public boolean saveNewUser(User user) throws Exception {
-
+    public User saveNewUser(User user) throws EntityExistsException {
+        User savedUser;
         setParametersOfNewUser(user);
         try {
-            userRepository.save(user);
+            savedUser = userRepository.save(user);
         }catch (Exception e){
-            throw new Exception();
+            throw new EntityExistsException();
         }
         if (!StringUtils.isEmpty(user.getEmail())) {
             String message = String.format(
@@ -98,7 +100,7 @@ public class UserService implements UserDetailsService {
 
             mailSender.send(user.getEmail(), Admin_Data.ACTIVATION_CODE, message);
         }
-        return true;
+        return savedUser;
     }
 
     private void setParametersOfNewUser(User user) {

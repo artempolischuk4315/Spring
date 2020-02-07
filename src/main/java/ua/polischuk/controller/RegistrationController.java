@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import ua.polischuk.entity.User;
 import ua.polischuk.service.UserService;
 
+import javax.persistence.EntityExistsException;
+
 @Slf4j
 @Controller
 public class RegistrationController {
@@ -36,7 +38,7 @@ public class RegistrationController {
             userService.saveNewUser(user);
             model.addAttribute("message", "check your mail!");
             return "registration";
-        }catch (Exception e) {
+        }catch (EntityExistsException e) {
                 model.addAttribute("message1", "user is already exist!");
                 return "registration";
             }

@@ -16,6 +16,7 @@ import ua.polischuk.entity.enumsAndRegex.Category;
 import ua.polischuk.service.TestService;
 import ua.polischuk.service.UserService;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -44,10 +45,10 @@ public class UserController {
                     .filter(test -> test.getCategory().toString().equals(category)) //TODO
                     .filter(test -> test.isActive())
                     .collect(Collectors.toSet());
-
             model.addAttribute("availableTests", tests);
+
         }catch (Exception e){
-            e.printStackTrace();
+            log.error("Exception ", e);
         }
         return "available_tests";
     }
@@ -90,8 +91,8 @@ public class UserController {
 
         try {
             test = testService.findTestByName(test.getName());
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (EntityNotFoundException e) {
+            log.error("No test");
             return "redirect:/";
         }
 

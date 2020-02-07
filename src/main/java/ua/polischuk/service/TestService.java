@@ -9,45 +9,44 @@ import ua.polischuk.entity.Test;
 import ua.polischuk.repository.TestRepository;
 import ua.polischuk.repository.UserRepository;
 
-import javax.transaction.Transactional;
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 
 @Slf4j
 @Service
 public class TestService {
 
     private final TestRepository testRepository;
-    private final UserRepository userRepository;
 
     @Autowired
     public TestService(TestRepository testRepository, UserRepository userRepository) {
         this.testRepository = testRepository;
-        this.userRepository = userRepository;
     }
 
-    public Test findTestByName(String name) throws Exception {
-        Test test = testRepository.findByName(name).orElseThrow(Exception::new);
+    public Test findTestByName(String name) throws EntityNotFoundException { //TODO
+        Test test = testRepository.findByName(name).orElseThrow(EntityNotFoundException::new);
         return test;
     }
 
     public TestsDTO getAllTests() {
-        //TODO checking for an empty test list
-
         return new TestsDTO(testRepository.findAll());
     }
 
 
-    @Transactional
-    public void saveNewTest (Test test) throws Exception{
+    public void saveNewTest (Test test){
             test.setActive(true);
-            testRepository.save(test);
+            try {
+                testRepository.save(test);
+            }catch (Exception e){
+                throw new EntityExistsException();
+            }
+
     }
 
-    @Transactional
-    public void deleteTest (Test test) throws Exception{
-        /*test.setActive(false);
-        testRepository.save(test);*/
+ /*   @Transactional
+    public void deleteTest (Test test) {
         testRepository.delete(test);
-    }
+    }*/
 
     public void disableTest(Test test){
         test.setActive(false);
