@@ -5,7 +5,7 @@ import ua.polischuk.entity.enumsAndRegex.Category;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.lang.reflect.Field;
+import java.util.Objects;
 
 
 @Data
@@ -62,20 +62,17 @@ public class Test implements Serializable, Comparable<Test> {
     }
 
 
-
-    public boolean isEmpty()  {
-
-        for (Field field : this.getClass().getDeclaredFields()) {
-            try {
-                field.setAccessible(true);
-                if (field.get(this)!=null) {
-                    return false;
-                }
-            } catch (Exception e) {
-            }
-        }
-        return true;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Test test = (Test) o;
+        return name.equals(test.name) &&
+                category == test.category;
     }
 
-
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, category);
+    }
 }

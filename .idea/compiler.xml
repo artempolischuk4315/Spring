@@ -6,9 +6,10 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="polischuk_SFT-c41b61ede448860fb8a40dc4cb719450777852f0" />
         <module name="polischuk_SFT_2.0-master" />
+        <module name="polischuk_SFT-c41b61ede448860fb8a40dc4cb719450777852f0" />
         <module name="sft_rerun_new" />
+        <module name="sft_rerun" />
         <module name="polischuk_SFT" />
       </profile>
     </annotationProcessing>
@@ -18,6 +19,7 @@
       <module name="polischuk_SFT" options="-parameters" />
       <module name="polischuk_SFT-c41b61ede448860fb8a40dc4cb719450777852f0" options="-parameters" />
       <module name="polischuk_SFT_2.0-master" options="-parameters" />
+      <module name="sft_rerun" options="-parameters" />
       <module name="sft_rerun_new" options="-parameters" />
     </option>
   </component>

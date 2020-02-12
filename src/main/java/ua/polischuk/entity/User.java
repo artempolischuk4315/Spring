@@ -73,6 +73,7 @@ public class User  {
     private Map<Test, Integer> resultsOfTests;
 
     private String activationCode;
+
     private boolean active;
 
     public User(String firstName, String lastName, String email, String password, Role role) {
@@ -83,7 +84,4 @@ public class User  {
         this.roles = role;
     }
 
-    public void setResultsOfTests(Map<Test, Integer> resultsOfTests) {
-        this.resultsOfTests = resultsOfTests;
-    }
 }

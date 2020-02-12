@@ -13,6 +13,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ua.polischuk.entity.Test;
 import ua.polischuk.entity.User;
 import ua.polischuk.entity.enumsAndRegex.Category;
+import ua.polischuk.service.CompletingTestService;
+import ua.polischuk.service.MailSender;
 import ua.polischuk.service.TestService;
 import ua.polischuk.service.UserService;
 
@@ -25,11 +27,16 @@ import java.util.stream.Collectors;
 public class UserController {
     private TestService testService;
     private UserService userService;
+    private MailSender mailSender;
+    private CompletingTestService completingTestService;
 
     @Autowired
-    public UserController(TestService testService, UserService userService) {
+    public UserController(TestService testService, UserService userService,
+                          MailSender mailSender, CompletingTestService completingTestService) {
         this.testService = testService;
         this.userService = userService;
+        this.mailSender = mailSender;
+        this.completingTestService = completingTestService;
     }
 
     @GetMapping( "/available_tests")
@@ -40,7 +47,7 @@ public class UserController {
         try {
 
             model.addAttribute("category", Category.valueOf(category));
-            Set<Test> tests = userService.getAvailableTests(userService.findByEmail(user.getUsername()).get())
+            Set<Test> tests = testService.getAvailableTestsByUser(userService.findByEmail(user.getUsername()).get())
                     .stream()
                     .filter(test -> test.getCategory().toString().equals(category)) //TODO
                     .filter(test -> test.isActive())
@@ -58,9 +65,9 @@ public class UserController {
         UserDetails userDetails = (UserDetails) org.springframework.security.core.context.SecurityContextHolder
                 .getContext().getAuthentication().getPrincipal();
         User user =userService.findByEmail(userDetails.getUsername()).get();
-        userService.recountSuccessOnMainUserPage(userDetails); //TODO в отельный метод в сервис
+        //userService.recountSuccessOnMainUserPage(userDetails);
         model.addAttribute("success", user.getSuccess());
-        model.addAttribute("tests", userService.setResultsOfTestsForPrinting(userDetails));
+        model.addAttribute("tests",testService.setResultsOfTestsForPrintingForCurrentUser(userDetails));
 
         return "completed_tests";
 
@@ -74,10 +81,9 @@ public class UserController {
         UserDetails userDetails = (UserDetails) org.springframework.security.core.context.SecurityContextHolder
                 .getContext().getAuthentication().getPrincipal();
         try {
-            userService.manageResultAndCompleteTest(userDetails, test);
+            completingTestService.completeTest(userDetails, test);
         }catch (Exception e){
             log.info("Error");
-            e.printStackTrace();
             model.addAttribute("error", error != null);
 
             return "redirect:/";
@@ -108,7 +114,7 @@ public class UserController {
                 .getContext().getAuthentication().getPrincipal();
 
         try {
-            userService.sendResult(userDetails, test);
+            mailSender.sendResult(userDetails, test);
         }catch (Exception e){
             return "test_over";
         }

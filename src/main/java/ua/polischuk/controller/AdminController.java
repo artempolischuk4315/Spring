@@ -12,7 +12,6 @@ import ua.polischuk.entity.Test;
 import ua.polischuk.entity.User;
 import ua.polischuk.service.TestService;
 import ua.polischuk.service.UserService;
-
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
@@ -52,7 +51,7 @@ public class AdminController {
     @GetMapping("/all_tests")
     @PreAuthorize("hasRole('ADMIN')")
     public String showTestMenu(Model model){
-        model.addAttribute("tests", testService.getAllTests().getTests());
+        model.addAttribute("tests", testService.getAllTests());
         return "tests_menu";
     }
 
@@ -73,7 +72,7 @@ public class AdminController {
     @GetMapping("/all_users")
     @PreAuthorize("hasRole('ADMIN')")
     public String getAllUsers(Model model){
-        model.addAttribute("users", userService.getAllUsers().getUsers());
+        model.addAttribute("users", userService.getAllUsers());
         return "all_users";
     }
 
@@ -81,8 +80,8 @@ public class AdminController {
     @GetMapping("/allow_test")
     @PreAuthorize("hasRole('ADMIN')")
     public String showAllowMenu(Model model){
-        model.addAttribute("tests", testService.getAllTests().getTests()); //TODO transaction?
-        model.addAttribute("users", userService.getAllUsers().getUsers());
+        model.addAttribute("tests", testService.getAllTests());
+        model.addAttribute("users", userService.getAllUsers());
         return "allow_test_redactor";
     }
 
@@ -90,11 +89,11 @@ public class AdminController {
     public String allowTests(String email, String testName, Model model){
 
         try{
-            userService.addTestToAvailable(email, testName);
+            testService.addTestToAvailableByEmailAndNameOfTest(email, testName);
         }catch (EntityNotFoundException ex){
             model.addAttribute("message", "bad email");
-            model.addAttribute("users", userService.getAllUsers().getUsers());  //TODO refactor
-            model.addAttribute("tests", testService.getAllTests().getTests());
+            model.addAttribute("users", userService.getAllUsers());
+            model.addAttribute("tests", testService.getAllTests());
             return "allow_test_redactor";
         }
 
@@ -123,11 +122,11 @@ public class AdminController {
 
         Optional<User> user = userService.findByEmail(email);
         if(user.isPresent()){
-            model.addAttribute("availableTests", userService.getAvailableTests(user.get()));
+            model.addAttribute("availableTests", testService.getAvailableTestsByUser(user.get()));
         }
         else{
             model.addAttribute("message", "wrong email");
-            model.addAttribute("users", userService.getAllUsers().getUsers());
+            model.addAttribute("users", userService.getAllUsers());
             return "all_users";
         }
         return "available_tests_for_selected_user";
