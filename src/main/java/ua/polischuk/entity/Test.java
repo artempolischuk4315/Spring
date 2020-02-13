@@ -16,6 +16,8 @@ import java.util.Objects;
 @Entity
 @Table(name = "Tests", uniqueConstraints={@UniqueConstraint(columnNames={"name"})})
 public class Test implements Serializable, Comparable<Test> {
+
+
     @Id
     @GeneratedValue (strategy = GenerationType.SEQUENCE)
     @Column( nullable = false)

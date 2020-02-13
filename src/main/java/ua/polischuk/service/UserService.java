@@ -58,6 +58,7 @@ public class UserService implements UserDetailsService {
     public User saveNewUser(User user) throws EntityExistsException {
         User savedUser;
         setParametersOfNewUser(user);
+
         try {
             savedUser = userRepository.save(user);
         }catch (Exception e){
@@ -77,7 +78,10 @@ public class UserService implements UserDetailsService {
 
     private void setParametersOfNewUser(User user) {
 
-        user.setRoles(Role.ROLE_USER);
+        if(user.getEmail().equals(Admin_Data.EMAIL)){
+            user.setRoles(Role.ROLE_ADMIN);
+        }else user.setRoles(Role.ROLE_USER);
+
         user.setFirstName(user.getFirstName().substring(0, 1).toUpperCase() + user.getFirstName().substring(1).toLowerCase());
         user.setLastName(user.getLastName().substring(0, 1).toUpperCase() + user.getLastName().substring(1).toLowerCase());
         user.setFirstName_ru(user.getFirstName_ru().substring(0, 1).toUpperCase() + user.getFirstName_ru().substring(1).toLowerCase());

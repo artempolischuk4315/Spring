@@ -83,6 +83,7 @@ public class TestService {
     public Set<Test> setResultsOfTestsForPrintingForCurrentUser(UserDetails userDetails) {
         User user = userRepository.findByEmail(userDetails.getUsername()).get();
 
+
         return user.getResultsOfTests().keySet()
                 .stream()
                 .peek(test -> test.setResult(user.getResultsOfTests().get(test)))
