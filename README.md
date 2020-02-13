@@ -23,16 +23,14 @@ From project root folder run - mvn spring-boot:run
 Use http://localhost:8090/ to view website
 
 ***********
-How to log in as admin 
-***********
+To log in as admin: 
 
 Registrate user with email: art4315@gmail.com
 Or go to src/main/ua.polischuk/service/constants/AdminData and change EMAIL to what you want.
 After that registrate user with this email.
 
 ********
-Database
-********
+Database:
 
 Set 
 
