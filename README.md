@@ -12,3 +12,27 @@
 
 (После консультации с перподавателем было решено, что студент не будет проходить тесты, а прохождение будет симулироваться с присвоением случайного рузельтата. С другой стороны администратор получает возможность блокировать тесты и создавать новые)
 
+
+*******
+RUNNING THE PROJECT
+*******
+Clone project to your local repository
+
+From project root folder run - mvn spring-boot:run
+
+Use http://localhost:8090/ to view website
+
+***********
+TO LOG IN AS ADMIN: 
+
+Registrate user with email: art4315@gmail.com
+Or go to src/main/ua.polischuk/service/constants/AdminData and change EMAIL to what you want.
+After that registrate user with this email.
+
+********
+DATABASE:
+
+Set 
+
+*spring.datasource.username= YOUR_USERNAME
+*spring.datasource.password=YOUR_PASSWORD
