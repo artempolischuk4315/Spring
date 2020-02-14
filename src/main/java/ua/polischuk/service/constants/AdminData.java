@@ -1,6 +1,6 @@
 package ua.polischuk.service.constants;
 
-public interface Admin_Data {
+public interface AdminData {
 
     //program data and messages
 

@@ -21,7 +21,7 @@
                 <div class="panel-heading">
                     <h3 th:text="#{header.login.panel}" class="panel-title" ></h3>
                 </div>
-                <div class="panel-body" >
+
                     <p th:if="${error}" th:text="#{alert.wrong.login.or.password}"  class="alert alert-info" role="alert"></p>
                     <p th:if="${logout}"  th:text="#{alert.successful.logout}"  class="alert alert-info" role="alert"></p>
                     <p th:if="${message}"  th:text="#{alert.successful.login}"  class="alert alert-info" role="alert"></p>
@@ -33,13 +33,14 @@
                                pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
                                required
                                name="email">
-                        </div>
-                        <div class="form-group">
+
+
+
                             <label th:text="#{label.password}"  for="password"></label>
                             <input type="password" class="form-control" id="password" placeholder="Password"
                                    name="password"
                                    required>
-                        </div>
+
                         <a href="/registration"  th:text="#{button.registration}" ></a>
                         <button type="submit" class="btn btn-secondary "  th:text="#{button.login}"></button>
                     </form>

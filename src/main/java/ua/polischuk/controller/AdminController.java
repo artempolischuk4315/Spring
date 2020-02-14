@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,8 +13,10 @@ import ua.polischuk.entity.Test;
 import ua.polischuk.entity.User;
 import ua.polischuk.service.TestService;
 import ua.polischuk.service.UserService;
+
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
+import javax.validation.Valid;
 import java.util.Optional;
 
 
@@ -37,7 +40,13 @@ public class AdminController {
     }
 
     @PostMapping("/add_test")
-    public String addTest(Test test, Model model){
+    public String addTest(@Valid Test test, BindingResult bindingResult, Model model){
+
+        if(bindingResult.hasErrors()){
+            model.addAttribute("invalidTestData", true);
+            return "tests_redactor";
+        }
+
         try{
             testService.saveNewTest(test);
         }catch (EntityExistsException ex){
@@ -88,16 +97,18 @@ public class AdminController {
     @PostMapping("/allow_test")
     public String allowTests(String email, String testName, Model model){
 
+        model.addAttribute("users", userService.getAllUsers());
+        model.addAttribute("tests", testService.getAllTests());
         try{
             testService.addTestToAvailableByEmailAndNameOfTest(email, testName);
         }catch (EntityNotFoundException ex){
             model.addAttribute("message", "bad email");
-            model.addAttribute("users", userService.getAllUsers());
-            model.addAttribute("tests", testService.getAllTests());
+
             return "allow_test_redactor";
         }
 
-        return "redirect:/allow_test";
+        model.addAttribute("addingSuccessful", true);
+        return "allow_test_redactor";
     }
 
     @PostMapping("/enable_test")

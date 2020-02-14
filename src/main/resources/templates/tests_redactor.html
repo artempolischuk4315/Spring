@@ -26,27 +26,25 @@
                     <h3 class="panel-title" th:text="#{title.registration}"></h3>
                 </div>
 
+                <p th:if="${invalidTestData}" class="alert alert-info" role="alert" th:text="#{message.wrong.testData}"></p>
+                
+                <p th:if="${message}" class="alert alert-info" role="alert" th:text="#{message.wrong.testName }"></p>
                      <div class="panel-body">
-                    <form th:action = "@{/add_test}" method="post">
-                        <p th:if="${message}" class="alert alert-info" role="alert" th:text="#{message.wrong.testName }"></p>
+                        <form th:action = "@{/add_test}" method="post">
                         <input name="${_csrf.parameterName}" value="${_csrf.token}" type="hidden">
-                        <div class="form-group">
                             <label for="name" th:text="#{label.test.name}"></label>
                             <input type="text" class="form-control" id="name" placeholder=" "
                                    pattern="^[a-zA-Z0-9]+$"
                                    required
-                                   name="name"></div>
+                                   name="name">
 
-                        <div class="panel-body">
-                            <form th:action = "@{/add_test}" method="post">
-                                <p th:if="${message}" class="alert alert-info" role="alert" th:text="#{message.wrong.testName }"></p>
+
                                 <input name="${_csrf.parameterName}" value="${_csrf.token}" type="hidden">
-                                <div class="form-group">
                                     <label for="name_ru" th:text="#{label.test.name_ru}"></label>
                                     <input type="text" class="form-control" id="name_ru" placeholder=" "
                                            pattern="^[а-яёА-ЯЁ0-9]+$"
                                            required
-                                           name="name_ru"></div>
+                                           name="name_ru">
 
                         <fieldset>
                             <label  th:text="#{label.test.category}"></label>
@@ -70,39 +68,37 @@
                         </fieldset>
 
 
-                                <div class="panel-body">
-                                    <form th:action = "@{/add_test}" method="post">
+
                                         <input name="${_csrf.parameterName}" value="${_csrf.token}" type="hidden">
-                                        <div class="form-group">
                                             <label for="difficulty" th:text="#{label.test.difficulty}"></label>
                                             <input type="text" class="form-control" id="difficulty" placeholder=" "
                                                    pattern="^(?:[1-9]|0[1-9]|10)$"
                                                    required
                                                    name="difficulty">
-                                        </div>
-                                        <div class="panel-body">
-                                            <form th:action = "@{/add_test}" method="post">
+
                                                 <input name="${_csrf.parameterName}" value="${_csrf.token}" type="hidden">
-                                                <div class="form-group">
+
                                                     <label for="numberOfQuestions" th:text="#{label.test.numberOfQuestions}"></label>
                                                     <input type="text" class="form-control" id="numberOfQuestions" placeholder=" "
                                                            pattern="[0-9]{1,2}$"
                                                            required
                                                            name="numberOfQuestions">
-                                                </div>
 
-                                                <div class="panel-body">
-                                                    <form th:action = "@{/add_test}" method="post">
                                                         <input name="${_csrf.parameterName}" value="${_csrf.token}" type="hidden">
-                                                        <div class="form-group">
+
                                                             <label for="timeLimit" th:text="#{label.test.timeLimit}"></label>
                                                             <input type="text" class="form-control" id="timeLimit" placeholder=" "
                                                                    pattern="[0-9]{1,3}$"
                                                                    required
                                                                    name="timeLimit">
-                                                        </div>
+
                                                         <button type="submit" class="btn btn-default" th:text="#{button.add_test}"></button>
 
-
+                        </form>
+            </div>
+            </div>
+    </div>
+</div>
+</div>
 </body>
 </html>

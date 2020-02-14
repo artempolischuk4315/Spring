@@ -59,10 +59,13 @@ public class TestService {
     }
 
     @Transactional
-    public Set<Test> addTestToAvailableByEmailAndNameOfTest(String email, String testName) throws EntityNotFoundException {
+    public Set<Test> addTestToAvailableByEmailAndNameOfTest(String email, String testName)
+            throws EntityNotFoundException {
 
         Test test = testRepository.findByName(testName).orElseThrow(() -> new EntityNotFoundException(testName));
         User user = userRepository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException((email)));
+
+
         if(user.getAvailableTests().isEmpty()) {
 
             user.setAvailableTests(new HashSet<>(Collections.singleton(test)));

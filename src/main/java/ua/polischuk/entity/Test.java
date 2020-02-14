@@ -1,9 +1,13 @@
 package ua.polischuk.entity;
 
 import lombok.*;
+import org.hibernate.validator.constraints.Range;
 import ua.polischuk.entity.enumsAndRegex.Category;
+import ua.polischuk.entity.enumsAndRegex.RegexContainer;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -18,38 +22,45 @@ import java.util.Objects;
 public class Test implements Serializable, Comparable<Test> {
 
 
+    private static final int MIN = 1;
+    private static final int MAX_DIF = 10;
+    private static final int MAX_QUESTIONS = 100;
+    private static final int MAX_TIME_LIMIT = 1000;
     @Id
     @GeneratedValue (strategy = GenerationType.SEQUENCE)
     @Column( nullable = false)
     private Long id;
 
 
+    @Pattern(regexp = RegexContainer.NAME_OF_TEST)
     @Column( nullable = false)
     private String name;
 
 
 
+    @Pattern(regexp = RegexContainer.NAME_OF_TEST_RU)
     @Column( nullable = false)
     private String name_ru;
 
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     @Column( nullable = false)
     private Category category;
 
 
+    @Range(min = MIN , max = MAX_DIF)
     @Column( nullable = false)
     private Integer difficulty; // from 1 to 10
 
 
+    @Range(min = MIN , max = MAX_QUESTIONS)
     @Column( nullable = false)
     private Integer numberOfQuestions;
 
+    @Range(min = MIN , max = MAX_TIME_LIMIT)
     @Column( nullable = false)
     private int timeLimit;   //minutes
-
-   /* @ManyToMany(fetch = FetchType.EAGER, mappedBy = "availableTests")
-    private List<User> users;*/
 
     @Column
     private boolean active;

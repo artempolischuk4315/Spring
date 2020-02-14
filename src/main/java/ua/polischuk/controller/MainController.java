@@ -10,7 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ua.polischuk.service.constants.Admin_Data;
+import ua.polischuk.service.constants.AdminData;
 import ua.polischuk.service.UserService;
 
 import static java.util.stream.Collectors.joining;
@@ -36,7 +36,7 @@ public class MainController {
         model.addAttribute("success", userService.findByEmail(user.getUsername()).get().getSuccess());
         model.addAttribute("role", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(joining(",")));
 
-        if(user.getUsername().equals(Admin_Data.EMAIL)){
+        if(user.getUsername().equals(AdminData.EMAIL)){
             return "hello_admin";
         }else {
 

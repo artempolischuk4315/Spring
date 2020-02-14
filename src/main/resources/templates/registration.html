@@ -21,8 +21,9 @@
                     <h3 class="panel-title" th:text="#{title.registration}"></h3>
                 </div>
 
-                <div class="panel-body">
+
                     <p th:if="${error}" th:text="#{alert.wrong.email}"  class="alert alert-info" role="alert"></p>
+                     <p th:if="${registerError}" th:text="#{alert.wrong.data}"  class="alert alert-info" role="alert"></p>
 
                     <form th:action = "@{/registration}" method="post">
                         <p th:if="${message}" class="alert alert-info" role="alert" th:text="#{message.check.mail }"></p>
@@ -36,8 +37,8 @@
                                    name="email">
                         </div>
 
-                        <div class="panel-body">
-                            <form th:action = "@{/registration}" method="post">
+
+
                                 <input name="${_csrf.parameterName}" value="${_csrf.token}" type="hidden">
                                 <div class="form-group">
                                     <label for="firstName" th:text="#{label.firstName}"></label>
@@ -46,8 +47,8 @@
                                            required
                                            name="firstName">
                                 </div>
-                                <div class="panel-body">
-                                    <form th:action = "@{/registration}" method="post">
+
+
                                         <input name="${_csrf.parameterName}" value="${_csrf.token}" type="hidden">
                                         <div class="form-group">
                                             <label for="firstName_ru" th:text="#{label.firstName_ru}"></label>
@@ -56,8 +57,8 @@
                                                    required
                                                    name="firstName_ru">
                                         </div>
-                                <div class="panel-body">
-                                    <form th:action = "@{/registration}" method="post">
+
+
                                         <input name="${_csrf.parameterName}" value="${_csrf.token}" type="hidden">
                                         <div class="form-group">
                                             <label for="lastName" th:text="#{label.lastName}"></label>
@@ -66,8 +67,8 @@
                                                    required
                                                    name="lastName">
                                         </div>
-                                        <div class="panel-body">
-                                            <form th:action = "@{/registration}" method="post">
+
+
                                                 <input name="${_csrf.parameterName}" value="${_csrf.token}" type="hidden">
                                                 <div class="form-group">
                                                     <label for="lastName_ru" th:text="#{label.lastName_ru}"></label>

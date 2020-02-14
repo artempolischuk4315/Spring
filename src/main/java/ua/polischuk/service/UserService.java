@@ -12,7 +12,7 @@ import ua.polischuk.entity.User;
 import ua.polischuk.entity.enumsAndRegex.Role;
 import ua.polischuk.repository.TestRepository;
 import ua.polischuk.repository.UserRepository;
-import ua.polischuk.service.constants.Admin_Data;
+import ua.polischuk.service.constants.AdminData;
 
 import javax.persistence.EntityExistsException;
 import javax.transaction.Transactional;
@@ -66,19 +66,19 @@ public class UserService implements UserDetailsService {
         }
         if (!StringUtils.isEmpty(user.getEmail())) {
             String message = String.format(
-                    Admin_Data.EMAIL_HELLO,
+                    AdminData.EMAIL_HELLO,
                     user.getEmail(),
                     user.getActivationCode()
             );
 
-            mailSender.send(user.getEmail(), Admin_Data.ACTIVATION_CODE, message);
+            mailSender.send(user.getEmail(), AdminData.ACTIVATION_CODE, message);
         }
         return savedUser;
     }
 
     private void setParametersOfNewUser(User user) {
 
-        if(user.getEmail().equals(Admin_Data.EMAIL)){
+        if(user.getEmail().equals(AdminData.EMAIL)){
             user.setRoles(Role.ROLE_ADMIN);
         }else user.setRoles(Role.ROLE_USER);
 

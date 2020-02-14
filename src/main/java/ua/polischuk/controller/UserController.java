@@ -65,8 +65,8 @@ public class UserController {
         UserDetails userDetails = (UserDetails) org.springframework.security.core.context.SecurityContextHolder
                 .getContext().getAuthentication().getPrincipal();
         User user =userService.findByEmail(userDetails.getUsername()).get();
-        //userService.recountSuccessOnMainUserPage(userDetails);
-        model.addAttribute("success", user.getSuccess());
+
+        model.addAttribute("success", String.format("%.2f", user.getSuccess())+"%");
         model.addAttribute("tests",testService.setResultsOfTestsForPrintingForCurrentUser(userDetails));
 
         return "completed_tests";

@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<a id='ru'
+   href="?lang=ru">ru
+</a>
+<a id='en'
+   href="?lang=en">en
+</a>
+
 <head>
     <meta charset="UTF-8">
-    <a id='ru'
-       href="?lang=ru">ru
-    </a>
-    <a id='en'
-       href="?lang=en">en
-    </a>
+
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -19,12 +21,6 @@
 </head>
 <body>
 <h1 th:text="#{title.test.completed}"> </h1>
-<h1 th:text="#{title.test.result}"> </h1>
-<form th:action = "@{/}" method="post">
-    <div class="button" >
-        <input type="submit" class="btn btn-secondary btn-lg " th:value="#{label.over}" >
-    </div>
-</form>
 <form action="#" th:action = "@{/test_over}" method="post" th:object="${test}">
     <div class="button" >
         <input type="text" th:field="*{id}" hidden/>

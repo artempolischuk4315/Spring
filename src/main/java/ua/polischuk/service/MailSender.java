@@ -11,7 +11,7 @@ import ua.polischuk.entity.Test;
 import ua.polischuk.entity.User;
 import ua.polischuk.repository.TestRepository;
 import ua.polischuk.repository.UserRepository;
-import ua.polischuk.service.constants.Admin_Data;
+import ua.polischuk.service.constants.AdminData;
 
 @Slf4j
 @Service
@@ -53,7 +53,7 @@ public class MailSender {
         Integer result = user.getResultsOfTests().get(test);
         log.info("RESULT "+result);
         log.info("TEST "+test.getName());
-        send(email, Admin_Data.EMAIL, Admin_Data.MAIL_MESSAGE+ test.getName()+Admin_Data.IS+result.toString());
+        send(email, AdminData.EMAIL, AdminData.MAIL_MESSAGE+ test.getName()+ AdminData.IS+result.toString());
 
         log.info("MAIL");
     }

@@ -50,6 +50,7 @@
                            pattern="^[a-zA-Z0-9]+$"
                            required
                            name="testName"></div>
+                <p th:if="${addingSuccessful}" th:text="#{alert.adding.ok}"  class="alert alert-info" role="alert"></p>
                 <p th:if="${message}" class="alert alert-info" role="alert" th:text="#{message.test.or.email.not.exists }"></p>
                 <button type="submit" class="btn btn-secondary btn-lg btn-block" th:text="#{button.allow}"></button>
             </form>
