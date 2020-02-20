@@ -57,7 +57,7 @@ public class MailSender {
         Integer result = user.getResultsOfTests().get(test);
         log.info("RESULT "+result);
         log.info("TEST "+test.getName());
-        send(email, bundle.getString("admin.mail"), bundle.getString("mail.message")
+        send(email, email, bundle.getString("mail.message")
                 + test.getName()+ bundle.getString("is")+result.toString());
 
         log.info("MAIL");
