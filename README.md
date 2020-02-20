@@ -25,9 +25,8 @@ Use http://localhost:8090/ to view website
 ***********
 TO LOG IN AS ADMIN: 
 
-Registrate user with email: art4315@gmail.com
-Or go to src/main/ua.polischuk/service/constants/AdminData and change EMAIL to what you want.
-After that registrate user with this email.
+Change role in database for choosen created user to ROLE_ADMIN and he will beciome admin. 
+Or create user with email "art4315@gmail.com". This user will become admin automatically.  
 
 ********
 DATABASE:
