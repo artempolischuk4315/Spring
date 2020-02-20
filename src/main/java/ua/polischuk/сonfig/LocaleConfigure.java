@@ -1,4 +1,4 @@
-package ua.polischuk.Configs;
+package ua.polischuk.сonfig;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;

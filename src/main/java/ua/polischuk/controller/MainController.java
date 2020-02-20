@@ -10,8 +10,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ua.polischuk.service.constants.AdminData;
 import ua.polischuk.service.UserService;
+
+import java.util.ResourceBundle;
 
 import static java.util.stream.Collectors.joining;
 
@@ -30,13 +31,15 @@ public class MainController {
 
     @RequestMapping("/")
     public String getHelloPage(Model model) {
+        ResourceBundle bundle = ResourceBundle.getBundle("adminAndMail");
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) authentication.getPrincipal();
         model.addAttribute("email", user.getUsername());
         model.addAttribute("success", userService.findByEmail(user.getUsername()).get().getSuccess());
         model.addAttribute("role", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(joining(",")));
 
-        if(user.getUsername().equals(AdminData.EMAIL)){
+        if(userService.findByEmail(user.getUsername()).get().getRoles().toString().equals("ROLE_ADMIN")){
             return "hello_admin";
         }else {
 

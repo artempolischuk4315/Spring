@@ -11,15 +11,18 @@ import ua.polischuk.entity.Test;
 import ua.polischuk.entity.User;
 import ua.polischuk.repository.TestRepository;
 import ua.polischuk.repository.UserRepository;
-import ua.polischuk.service.constants.AdminData;
+
+import java.util.ResourceBundle;
 
 @Slf4j
 @Service
 public class MailSender {
 
     private JavaMailSender mailSender;
+
     private UserRepository userRepository;
-    private TestRepository testRepository;
+
+    ResourceBundle bundle = ResourceBundle.getBundle("adminAndMail");
 
     @Value("${spring.mail.username}")
     private String username;
@@ -28,7 +31,7 @@ public class MailSender {
     public MailSender(JavaMailSender mailSender, UserRepository userRepository, TestRepository testRepository) {
         this.mailSender = mailSender;
         this.userRepository = userRepository;
-        this.testRepository = testRepository;
+
     }
 
 
@@ -45,6 +48,7 @@ public class MailSender {
 
 
     public void sendResult(UserDetails userDetails,  Test test){
+
         log.info("IN MAIL");
         String email = userDetails.getUsername();
         log.info("EMAIL IS "+email);
@@ -53,7 +57,8 @@ public class MailSender {
         Integer result = user.getResultsOfTests().get(test);
         log.info("RESULT "+result);
         log.info("TEST "+test.getName());
-        send(email, AdminData.EMAIL, AdminData.MAIL_MESSAGE+ test.getName()+ AdminData.IS+result.toString());
+        send(email, bundle.getString("admin.mail"), bundle.getString("mail.message")
+                + test.getName()+ bundle.getString("is")+result.toString());
 
         log.info("MAIL");
     }

@@ -2,8 +2,7 @@ package ua.polischuk.entity;
 
 import lombok.*;
 import org.hibernate.validator.constraints.Range;
-import ua.polischuk.entity.enumsAndRegex.Category;
-import ua.polischuk.entity.enumsAndRegex.RegexContainer;
+import ua.polischuk.constants.RegexContainer;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -58,8 +57,8 @@ public class Test implements Serializable, Comparable<Test> {
     @Column( nullable = false)
     private Integer numberOfQuestions;
 
-    @Range(min = MIN , max = MAX_TIME_LIMIT)
-    @Column( nullable = false)
+    @Range(min = MIN, max = MAX_TIME_LIMIT)
+    @Column(nullable = false)
     private int timeLimit;   //minutes
 
     @Column

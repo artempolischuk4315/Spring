@@ -6,8 +6,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import ua.polischuk.entity.Test;
 import ua.polischuk.entity.User;
+import ua.polischuk.exception.CompletingTestException;
 import ua.polischuk.repository.TestRepository;
 import ua.polischuk.repository.UserRepository;
+
 import javax.transaction.Transactional;
 
 @Slf4j
@@ -30,8 +32,9 @@ public class CompletingTestService {
     }
 
     @Transactional
-    public void completeTest(UserDetails userDetails, Test test) throws Exception {
-        User user = userRepository.findByEmail(userDetails.getUsername()).orElseThrow(Exception::new); //запрос в БД на текущего пользователя
+    public void completeTest(UserDetails userDetails, Test test) throws CompletingTestException {
+        User user = userRepository.findByEmail(userDetails.getUsername())
+                .orElseThrow(()->new CompletingTestException("User removed from db"));
         dropTestFromAvailable(test, user);
         Integer result = setRandomResult();
         addTestToCompleted(test, user, result);
@@ -39,31 +42,34 @@ public class CompletingTestService {
         userRepository.save(user);
     }
 
-    private void dropTestFromAvailable(Test test, User user) throws Exception {
+    private void dropTestFromAvailable(Test test, User user) throws CompletingTestException {
         if(user.getAvailableTests().contains(test)&&
                 testRepository.findByName(test.getName()).get().isActive()){
             user.getAvailableTests().remove(test);
             userRepository.save(user);
         }
-        else throw new Exception();
+        else{
+            log.error("Test removed from available (Exception while completing test)");
+            throw new CompletingTestException("Exception while removing from available");
+        }
 
     }
     private int setRandomResult() {
         return   (MIN+ (int) (Math.random()*MAX));
     }
 
-    private void addTestToCompleted(Test test, User user, Integer result) throws Exception {
+    private void addTestToCompleted(Test test, User user, Integer result) throws CompletingTestException {
         log.info(user.toString());
         removeIfTestCompletedEarlier(test, user);
 
         log.info(result.toString());
 
-        user.getResultsOfTests().put(testRepository.findByName(test.getName()).orElseThrow(Exception::new), result);//CHANGED
+        user.getResultsOfTests().put(testRepository.findByName(test.getName())
+                .orElseThrow(() -> new CompletingTestException("Test in database not found")), result);
 
     }
 
     private boolean removeIfTestCompletedEarlier(Test test, User user){
-        //Test testThatWeWantToRemoveFromDB = testRepository.findByName(test.getName()).get();
 
         if(user.getResultsOfTests().containsKey(test)){
             user.getResultsOfTests().remove(test,
@@ -80,12 +86,17 @@ public class CompletingTestService {
         }
     }
 
-    protected void recountSuccessByUser(User user) {
+    private void recountSuccessByUser(User user) {
+
         log.info(user.toString());
+
         if( user.getResultsOfTests().keySet().isEmpty()){
+
             user.setSuccess(0.0);
+
         }else{
-            Integer size = user.getResultsOfTests().keySet().size();
+
+            int size = user.getResultsOfTests().keySet().size();
 
             double sumResults = user.getResultsOfTests().keySet().stream()
                     .mapToInt(test -> user.getResultsOfTests().get(test))

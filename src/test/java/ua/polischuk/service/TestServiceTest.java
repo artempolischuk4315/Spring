@@ -8,8 +8,8 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.core.userdetails.UserDetails;
 import ua.polischuk.entity.User;
-import ua.polischuk.entity.enumsAndRegex.Category;
-import ua.polischuk.entity.enumsAndRegex.Role;
+import ua.polischuk.entity.Category;
+import ua.polischuk.entity.Role;
 import ua.polischuk.repository.TestRepository;
 import ua.polischuk.repository.UserRepository;
 

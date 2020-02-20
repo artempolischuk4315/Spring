@@ -1,4 +1,4 @@
-package ua.polischuk.Configs;
+package ua.polischuk.сonfig;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -7,26 +7,21 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import ua.polischuk.service.UserService;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
     private final UserService userService;
 
     public SecurityConfig(UserService userService) {
         this.userService = userService;
     }
-    static SessionRegistry SR;
-    @Bean
-    public HttpSessionEventPublisher httpSessionEventPublisher() {
-        return new HttpSessionEventPublisher();
-    }
+
 
     @Bean
     public PasswordEncoder bCryptPasswordEncoder() {
@@ -36,14 +31,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception{
-        http.sessionManagement().maximumSessions(1);
+
         http
                 .authorizeRequests()
                 .antMatchers("/login", "/registration", "/activate/**").permitAll()
                // .antMatchers("/all_users").hasRole("ADMIN")
-                .anyRequest().authenticated()//.anyRequest().authenticated()
+                .anyRequest().authenticated()
                 .and()
-                .formLogin().loginPage("/login").defaultSuccessUrl("/",true).usernameParameter("email").permitAll()
+                .formLogin().loginPage("/login")
+                .defaultSuccessUrl("/",true)
+                .usernameParameter("email")
                 .and()
                 .logout()
                 .invalidateHttpSession(true)
@@ -52,9 +49,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
                 .exceptionHandling()
-                .accessDeniedPage("/login?error");
+                .accessDeniedPage("/login?error")
+                .and()
+                .sessionManagement()
+                .maximumSessions(1);
 
     }
+
 
 
     @Autowired

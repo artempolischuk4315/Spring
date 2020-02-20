@@ -3,6 +3,7 @@ package ua.polischuk.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import ua.polischuk.entity.Test;
@@ -42,7 +43,10 @@ public class TestService {
             test.setActive(true);
             try {
                 testRepository.save(test);
-            }catch (Exception e){
+            }catch (DataIntegrityViolationException e){
+
+                log.error("Error saving new test", e);
+
                 throw new EntityExistsException();
             }
 

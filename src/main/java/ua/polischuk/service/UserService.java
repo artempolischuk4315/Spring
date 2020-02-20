@@ -2,44 +2,47 @@ package ua.polischuk.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import ua.polischuk.entity.Role;
 import ua.polischuk.entity.User;
-import ua.polischuk.entity.enumsAndRegex.Role;
 import ua.polischuk.repository.TestRepository;
 import ua.polischuk.repository.UserRepository;
-import ua.polischuk.service.constants.AdminData;
 
 import javax.persistence.EntityExistsException;
 import javax.transaction.Transactional;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Slf4j
 @Service
 public class UserService implements UserDetailsService {
-    private final static int MAX = 100;
+
+    public static final String ADMIN_MAIL = "admin.mail";
+    public static final String ACTIVATION_CODE = "activation.code";
+    public static final String EMAIL_HELLO = "email.hello";
+    public static final String HELLO_S = "Hello, %s!";
     private final UserRepository userRepository;
-    private final TestRepository testRepository;
+
     private MailSender mailSender;
+
+    ResourceBundle bundle = ResourceBundle.getBundle("adminAndMail");
 
     @Autowired
     public UserService(UserRepository userRepository, TestRepository testRepository, MailSender mailSender) {
 
         this.userRepository = userRepository;
-        this.testRepository = testRepository;
         this.mailSender = mailSender;
     }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(email).orElseThrow(()-> new UsernameNotFoundException(email));
+
 
         return new org.springframework.security.core.userdetails.User(
                 user.getEmail(), user.getPassword(), Collections.singleton(user.getRoles()));
@@ -61,24 +64,28 @@ public class UserService implements UserDetailsService {
 
         try {
             savedUser = userRepository.save(user);
-        }catch (Exception e){
-            throw new EntityExistsException();
+        }catch (DataIntegrityViolationException e){
+
+            log.error("Saving new user exception", e);
+
+            throw new EntityExistsException("Entity already exists");
         }
         if (!StringUtils.isEmpty(user.getEmail())) {
             String message = String.format(
-                    AdminData.EMAIL_HELLO,
+                    HELLO_S +
+                    bundle.getString(EMAIL_HELLO),
                     user.getEmail(),
                     user.getActivationCode()
             );
 
-            mailSender.send(user.getEmail(), AdminData.ACTIVATION_CODE, message);
+            mailSender.send(user.getEmail(),  bundle.getString(ACTIVATION_CODE), message);
         }
         return savedUser;
     }
 
     private void setParametersOfNewUser(User user) {
 
-        if(user.getEmail().equals(AdminData.EMAIL)){
+        if(user.getEmail().equals( bundle.getString(ADMIN_MAIL))){
             user.setRoles(Role.ROLE_ADMIN);
         }else user.setRoles(Role.ROLE_USER);
 

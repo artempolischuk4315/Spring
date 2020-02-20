@@ -1,4 +1,4 @@
-package ua.polischuk.entity.enumsAndRegex;
+package ua.polischuk.entity;
 
 
 import org.springframework.security.core.GrantedAuthority;

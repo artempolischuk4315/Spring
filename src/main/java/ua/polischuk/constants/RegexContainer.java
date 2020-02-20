@@ -1,4 +1,4 @@
-package ua.polischuk.entity.enumsAndRegex;
+package ua.polischuk.constants;
 
 public interface RegexContainer {
         String NAME_REGEX = "^[a-zA-Z]+$";

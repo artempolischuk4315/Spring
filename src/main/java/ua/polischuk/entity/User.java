@@ -1,8 +1,7 @@
 package ua.polischuk.entity;
 
 import lombok.*;
-import ua.polischuk.entity.enumsAndRegex.RegexContainer;
-import ua.polischuk.entity.enumsAndRegex.Role;
+import ua.polischuk.constants.RegexContainer;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;

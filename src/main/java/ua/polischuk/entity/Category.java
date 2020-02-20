@@ -1,4 +1,4 @@
-package ua.polischuk.entity.enumsAndRegex;
+package ua.polischuk.entity;
 
 public enum Category {
     PROGRAMMING, MATH, PHYSICS, HISTORY

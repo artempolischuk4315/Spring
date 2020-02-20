@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ua.polischuk.entity.Test;
 import ua.polischuk.entity.User;
-import ua.polischuk.entity.enumsAndRegex.Category;
+import ua.polischuk.entity.Category;
+import ua.polischuk.exception.CompletingTestException;
 import ua.polischuk.service.CompletingTestService;
 import ua.polischuk.service.MailSender;
 import ua.polischuk.service.TestService;
@@ -82,8 +83,9 @@ public class UserController {
                 .getContext().getAuthentication().getPrincipal();
         try {
             completingTestService.completeTest(userDetails, test);
-        }catch (Exception e){
-            log.info("Error");
+        }catch (CompletingTestException e){
+            log.info("Error while completing test (controller level)");
+
             model.addAttribute("error", error != null);
 
             return "redirect:/";
@@ -113,11 +115,8 @@ public class UserController {
         UserDetails userDetails = (UserDetails) org.springframework.security.core.context.SecurityContextHolder
                 .getContext().getAuthentication().getPrincipal();
 
-        try {
             mailSender.sendResult(userDetails, test);
-        }catch (Exception e){
-            return "test_over";
-        }
+
         return "redirect:/";
     }
 }
