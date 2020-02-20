@@ -31,7 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception{
-
+        http.sessionManagement().maximumSessions(1);
         http
                 .authorizeRequests()
                 .antMatchers("/login", "/registration", "/activate/**").permitAll()
@@ -49,10 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
                 .exceptionHandling()
-                .accessDeniedPage("/login?error")
-                .and()
-                .sessionManagement()
-                .maximumSessions(1);
+                .accessDeniedPage("/login?error");
 
     }
 
