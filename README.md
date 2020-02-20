@@ -35,4 +35,5 @@ DATABASE:
 Set 
 
 *spring.datasource.username= YOUR_USERNAME
+
 *spring.datasource.password=YOUR_PASSWORD
