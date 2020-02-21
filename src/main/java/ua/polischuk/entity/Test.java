@@ -7,7 +7,6 @@ import ua.polischuk.constants.RegexContainer;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import java.io.Serializable;
 import java.util.Objects;
 
 
@@ -18,7 +17,7 @@ import java.util.Objects;
 @ToString
 @Entity
 @Table(name = "Tests", uniqueConstraints={@UniqueConstraint(columnNames={"name"})})
-public class Test implements Serializable, Comparable<Test> {
+public class Test implements  Comparable<Test> {
 
 
     private static final int MIN = 1;

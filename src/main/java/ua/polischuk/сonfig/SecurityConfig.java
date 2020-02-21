@@ -31,11 +31,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception{
-        http.sessionManagement().maximumSessions(1);
+
+        http.sessionManagement()
+                .maximumSessions(1)
+                .maxSessionsPreventsLogin(false);
+
         http
                 .authorizeRequests()
                 .antMatchers("/login", "/registration", "/activate/**").permitAll()
-               // .antMatchers("/all_users").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/login")
