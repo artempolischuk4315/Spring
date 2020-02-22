@@ -6,7 +6,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import ua.polischuk.entity.Test;
@@ -22,7 +21,6 @@ import java.util.Optional;
 
 @Slf4j
 @Controller
-@ControllerAdvice
 public class AdminController {
     private TestService testService;
     private UserService userService;

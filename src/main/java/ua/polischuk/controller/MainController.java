@@ -3,7 +3,6 @@ package ua.polischuk.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,10 +16,6 @@ import java.util.ResourceBundle;
 import static java.util.stream.Collectors.joining;
 
 @Controller
-@EnableGlobalMethodSecurity(
-        prePostEnabled = true,
-        securedEnabled = true,
-        jsr250Enabled = true)
 public class MainController {
 
     private UserService userService;
